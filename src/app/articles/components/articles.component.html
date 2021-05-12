@@ -1,11 +1,4 @@
 <app-nav-bar (emitIndexing)="indexing($event)" (emitIndexed)="isIndexed($event)" (emitClearIndex)="indexCleared()"></app-nav-bar>
-<div class="search">
-  <div class="container">
-    <div class="form-group text-center mt-4">
-      <a [routerLink]="['']"><h4>BACK TO SEARCH!</h4></a>
-    </div>
-  </div>
-</div>
 <div class="container dashboard" *ngIf="queryResultModel?.articles">
   <p-accordion>
     <p-accordionTab *ngFor="let article of queryResultModel?.articles">

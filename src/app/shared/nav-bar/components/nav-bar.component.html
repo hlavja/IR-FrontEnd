@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="">
+  <a class="navbar-brand">
     <img class="logo" src="/assets/images/ir.png" alt="TicTacToe">
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -8,12 +8,32 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li>
-        <a class="nav-link">Lobby</a>
+    <ul *ngIf="isIndex" class="navbar-nav mr-auto">
+      <li class='nav-item'>
+        <a class="nav-link" (click)="initIndex()">Init CRYPTO data</a>
+      </li>
+      <li class='nav-item'>
+        <a class="nav-link" (click)="initTrec()">Init TREC data</a>
       </li>
       <li>
-        <a class="nav-link">Match history</a>
+        <a class="nav-link" (click)="loadIndex()">Load index</a>
+      </li>
+      <li class='nav-item' *ngIf="isIndexed">
+        <a class="nav-link" (click)="saveIndex()">Save index</a>
+      </li>
+      <li class='nav-item' *ngIf="isIndexed">
+        <a class="nav-link" [routerLink]="['/articles']">Indexed articles</a>
+      </li>
+    </ul>
+    <ul *ngIf="!isIndex" class="navbar-nav mr-auto">
+      <li class='nav-item'>
+        <a class="nav-link" [routerLink]="['']">Search'</a>
+      </li>
+    </ul>
+
+    <ul *ngIf="isIndex" class="nav navbar-nav navbar-right">
+      <li class='nav-item' *ngIf="isIndexed">
+        <a class="nav-link" (click)="clearIndex()">Clear index</a>
       </li>
     </ul>
   </div>

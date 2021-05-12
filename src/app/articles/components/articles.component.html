@@ -1,0 +1,48 @@
+<app-nav-bar (emitIndexing)="indexing($event)" (emitIndexed)="isIndexed($event)" (emitClearIndex)="indexCleared()"></app-nav-bar>
+<div class="search">
+  <div class="container">
+    <div class="form-group text-center mt-4">
+      <a [routerLink]="['']"><h4>BACK TO SEARCH!</h4></a>
+    </div>
+  </div>
+</div>
+<div class="container dashboard" *ngIf="queryResultModel?.articles">
+  <p-accordion>
+    <p-accordionTab *ngFor="let article of queryResultModel?.articles">
+      <p-header [className]="'w-100'">
+              <span class="flex-1 align-items-center row">
+                <div class="spacer-accordion"></div>
+                <div class="col-md-7">{{ article.title}}</div>
+                <div class="col-md-3 text-right">Author: <br>{{ article.author}}</div>
+                <div class="col-md-2 text-right">Category: <br>{{ article.category}}</div>
+              </span>
+      </p-header>
+      <div class="row">
+        <div class="col">
+          {{article.content}}
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col">
+          <a href="{{article.url}}" target="_blank">Article URL</a>
+        </div>
+        <div class="col text-right">
+          Published: {{article.published | date : 'YYYY-MM-dd HH:mm:ss'}}
+        </div>
+        <div class="col text-right">
+          Downloaded: {{article.downloadDate | date : 'YYYY-MM-dd HH:mm:ss'}}
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col text-right">
+          <button pButton type="button" label="Edit article" icon="pi pi-cog" (click)="editArticle($event, article)" [className]="'p-button-warning'"></button>
+          <button pButton type="button" label="Delete article" icon="pi pi-times" (click)="deleteArticle($event, article)" [className]="'p-button-danger'"></button>
+        </div>
+      </div>
+    </p-accordionTab>
+  </p-accordion>
+</div>
+
+<app-edit-article-popup *ngIf="showArticlePopup" [(isVisible)]="showArticlePopup" [articleModel]="editedArticle"></app-edit-article-popup>

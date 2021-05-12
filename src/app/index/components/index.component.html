@@ -1,2 +1,68 @@
-<app-nav-bar></app-nav-bar>
-asd
+<app-nav-bar (emitIndexing)="indexing($event)" (emitIndexed)="isIndexed($event)" (emitClearIndex)="indexCleared()" [isIndex]="true"></app-nav-bar>
+<div class="search">
+  <div class="container">
+    <div *ngIf="loading" class="d-flex justify-content-center h-100">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+    <div class="d-flex justify-content-center h-100">
+        <div class="card-body">
+          <div class="form-group text-center mt-4">
+            <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+          </div>
+          <form [formGroup]="searchForm" (ngSubmit)="search()">
+            <div class="input-group form-group">
+              <input type="text" formControlName="searchText" class="form-control" placeholder="Search text"/>
+            </div>
+            <div>
+              Count of results:
+              <select formControlName="groups" id="groups">
+                <option value="5" selected>5</option>
+                <option *ngFor="let group of groups; let i = index" [value]="groups[i]">
+                  {{groups[i]}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group text-center mt-4">
+              <p-button *ngIf="indexed" type="submit" label="Search"><i class="fas fa-sign-in-alt"></i></p-button>
+            </div>
+          </form>
+        </div>
+    </div>
+    <div>
+      <div class="container dashboard" *ngIf="queryResultModel?.documentsCount">
+        <div class="col">
+          Total number of results: {{queryResultModel?.documentsCount}}
+        </div>
+        <p-accordion>
+          <p-accordionTab *ngFor="let article of queryResultModel?.articles">
+            <p-header [className]="'w-100'">
+              <span class="flex-1 align-items-center row">
+                <div class="spacer-accordion"></div>
+                <div class="col-md-8">{{ article.title}}</div>
+                <div class="col-md-2 text-right">Rank: {{ article.rank}}</div>
+                <div class="col-md-2 text-right">Score: {{ article.score}}</div>
+              </span>
+            </p-header>
+            <div class="row">
+              <div class="col">
+                {{article.content}}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col">
+                Author: {{article.author}}
+              </div>
+              <div class="col">
+                Category: {{article.category}}
+              </div>
+              <div class="col text-right">
+                <a href="{{article.url}}" target="_blank">Article</a>
+              </div>
+            </div>
+          </p-accordionTab>
+        </p-accordion>
+      </div>
+    </div>
+  </div>
+</div>

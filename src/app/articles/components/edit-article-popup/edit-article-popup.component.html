@@ -1,0 +1,38 @@
+<p-dialog [visible]="isVisible" [closable]="false" [modal]="true" [draggable]="false" header="Article edit!" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <form [formGroup]="insertForm">
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Author</span>
+      </div>
+      <input type="text" formControlName="author" class="form-control" id="author"
+             placeholder="{{articleModel.author}}"/>
+    </div>
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Title</span>
+      </div>
+      <input type="text" formControlName="title" class="form-control" id="title"
+             placeholder="{{articleModel.title}}"/>
+    </div>
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Category</span>
+      </div>
+      <input type="text" formControlName="category" class="form-control" id="category"
+             placeholder="{{articleModel.category}}"/>
+    </div>
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Content</span>
+      </div>
+      <textarea pInputTextarea type="text" formControlName="content" class="form-control" id="content"
+                placeholder="{{articleModel.content}}"></textarea>
+    </div>
+  </form>
+  <p-footer>
+    <div>
+      <p-button icon="pi pi-times" (click)="close()" label="Close" class="pr-2"></p-button>
+      <p-button icon="pi pi-check" (click)="processArticleEdition()" type="submit" label="Save" class="pr-2"></p-button>
+    </div>
+  </p-footer>
+</p-dialog>

@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IndexComponent } from './components/index.component';
+import { ArticlesComponent } from './components/articles.component';
 import {NavBarModule} from "../shared/nav-bar/nav-bar.module";
+import {AccordionModule} from "primeng/accordion";
 import {ButtonModule} from "primeng/button";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AccordionModule} from "primeng/accordion";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {SelectButtonModule} from "primeng/selectbutton";
+import {RouterModule} from "@angular/router";
+import { EditArticlePopupComponent } from './components/edit-article-popup/edit-article-popup.component';
+import {DialogModule} from "primeng/dialog";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 
 
 @NgModule({
   declarations: [
-    IndexComponent
+    ArticlesComponent,
+    EditArticlePopupComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +27,10 @@ import {SelectButtonModule} from "primeng/selectbutton";
     AccordionModule,
     ProgressSpinnerModule,
     SelectButtonModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
+    DialogModule,
+    InputTextareaModule
   ]
 })
-export class IndexModule { }
+export class ArticlesModule { }

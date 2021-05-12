@@ -11,26 +11,6 @@
     }
   ],
   "paths": {
-    "/api/articles": {
-      "get": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "getArticles",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueryResultModel"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/article/{id}": {
       "get": {
         "tags": [
@@ -52,7 +32,7 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QueryResultModel"
                 }
@@ -81,9 +61,29 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/articles": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "getArticles",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResultModel"
                 }
               }
             }
@@ -101,7 +101,7 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -111,19 +111,77 @@
         }
       }
     },
-    "/api/initData": {
+    "/api/clearIndex": {
       "get": {
         "tags": [
           "controller"
         ],
-        "operationId": "initData",
+        "operationId": "clearIndex",
         "responses": {
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/query": {
+      "post": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "search",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResultModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/article": {
+      "post": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "updateArticle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArticleModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleModel"
                 }
               }
             }
@@ -151,7 +209,7 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -161,75 +219,37 @@
         }
       }
     },
-    "/api/article": {
-      "post": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "updateArticle",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ArticleModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArticleModel"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/query": {
-      "post": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "search",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueryModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueryResultModel"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/clearIndex": {
+    "/api/indexStatus": {
       "get": {
         "tags": [
           "controller"
         ],
-        "operationId": "clearIndex",
+        "operationId": "checkIndexStatus",
         "responses": {
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/initData": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "initData",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -259,7 +279,7 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -339,6 +359,14 @@
           "numberOfResults": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "IndexStatus": {
+        "type": "object",
+        "properties": {
+          "initialized": {
+            "type": "boolean"
           }
         }
       }

@@ -92,6 +92,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     this.controllerService.saveIndex$Response({fileName: 'index'}).pipe().subscribe(res => {
       if (res.status === 200) {
         console.log('completed');
+        this.isSaved = true;
         this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful save index!'});
         this.emitIndexing.emit(false);
       } else {

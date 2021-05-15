@@ -1,4 +1,4 @@
-FROM node:15.5-alpine AS build
+FROM node:lts-alpine3.13 AS build
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
@@ -6,6 +6,6 @@ COPY . .
 RUN npm run build
 
 
-FROM nginx:1.19.6-alpine
+FROM nginx:stable-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /usr/src/app/dist/ir /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist/IR /usr/share/nginx/html

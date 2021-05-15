@@ -11,66 +11,6 @@
     }
   ],
   "paths": {
-    "/api/article/{id}": {
-      "get": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "getArticleById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueryResultModel"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "deleteArticle",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/articles": {
       "get": {
         "tags": [
@@ -91,12 +31,12 @@
         }
       }
     },
-    "/api/initTrec": {
+    "/api/initData": {
       "get": {
         "tags": [
           "controller"
         ],
-        "operationId": "initTrecData",
+        "operationId": "initData",
         "responses": {
           "200": {
             "description": "default response",
@@ -104,55 +44,6 @@
               "application/json": {
                 "schema": {
                   "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/clearIndex": {
-      "get": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "clearIndex",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/query": {
-      "post": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "search",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueryModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueryResultModel"
                 }
               }
             }
@@ -239,12 +130,12 @@
         }
       }
     },
-    "/api/initData": {
+    "/api/initTrec": {
       "get": {
         "tags": [
           "controller"
         ],
-        "operationId": "initData",
+        "operationId": "initTrecData",
         "responses": {
           "200": {
             "description": "default response",
@@ -282,6 +173,135 @@
               "application/json": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/article/{id}": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "getArticleById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResultModel"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "deleteArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/query": {
+      "post": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "search",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResultModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clearIndex": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "clearIndex",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/savedIndex": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "checkSavedIndexState",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedIndexStatus"
                 }
               }
             }
@@ -347,6 +367,14 @@
           }
         }
       },
+      "IndexStatus": {
+        "type": "object",
+        "properties": {
+          "initialized": {
+            "type": "boolean"
+          }
+        }
+      },
       "QueryModel": {
         "type": "object",
         "properties": {
@@ -362,10 +390,10 @@
           }
         }
       },
-      "IndexStatus": {
+      "SavedIndexStatus": {
         "type": "object",
         "properties": {
-          "initialized": {
+          "saved": {
             "type": "boolean"
           }
         }

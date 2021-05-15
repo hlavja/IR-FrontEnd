@@ -12,6 +12,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   interval;
   isIndexed = false;
+  isSaved = false;
   @Output() emitIndexing: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() emitIndexed: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() emitClearIndex: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -23,8 +24,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getIndexStatus();
+    this.getSavedIndex();
     this.interval = setInterval(()=>{
       this.getIndexStatus();
+      this.getSavedIndex();
     }, 10000);
   }
 
@@ -36,6 +39,15 @@ export class NavBarComponent implements OnInit, OnDestroy {
         if (!response.initialized) {
           this.emitClearIndex.emit();
         }
+      })
+    ).subscribe();
+  }
+
+
+  getSavedIndex() {
+    this.controllerService.checkSavedIndexState().pipe(
+      tap(response => {
+        this.isSaved = response.saved;
       })
     ).subscribe();
   }

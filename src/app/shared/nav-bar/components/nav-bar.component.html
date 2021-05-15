@@ -15,19 +15,19 @@
       <li class='nav-item'>
         <a class="nav-link" (click)="initTrec()">Init TREC data</a>
       </li>
-      <li>
+      <li *ngIf="isSaved">
         <a class="nav-link" (click)="loadIndex()">Load index</a>
       </li>
-      <li class='nav-item' *ngIf="isIndexed">
+      <li *ngIf="isIndexed" class='nav-item'>
         <a class="nav-link" (click)="saveIndex()">Save index</a>
       </li>
-      <li class='nav-item' *ngIf="isIndexed">
+      <li *ngIf="isIndexed" class='nav-item'>
         <a class="nav-link" [routerLink]="['/articles']">Indexed articles</a>
       </li>
     </ul>
     <ul *ngIf="!isIndex" class="navbar-nav mr-auto">
       <li class='nav-item'>
-        <a class="nav-link" [routerLink]="['']">Search'</a>
+        <a class="nav-link" [routerLink]="['']">Search</a>
       </li>
     </ul>
 

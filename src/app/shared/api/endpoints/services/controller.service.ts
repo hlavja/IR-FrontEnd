@@ -13,6 +13,7 @@ import { ArticleModel } from '../models/article-model';
 import { IndexStatus } from '../models/index-status';
 import { QueryModel } from '../models/query-model';
 import { QueryResultModel } from '../models/query-result-model';
+import { SavedIndexStatus } from '../models/saved-index-status';
 
 @Injectable({
   providedIn: 'root',
@@ -23,98 +24,6 @@ export class ControllerService extends BaseService {
     http: HttpClient
   ) {
     super(config, http);
-  }
-
-  /**
-   * Path part for operation getArticleById
-   */
-  static readonly GetArticleByIdPath = '/api/article/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getArticleById()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getArticleById$Response(params: {
-    id: number;
-  }): Observable<StrictHttpResponse<QueryResultModel>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ControllerService.GetArticleByIdPath, 'get');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<QueryResultModel>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getArticleById$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getArticleById(params: {
-    id: number;
-  }): Observable<QueryResultModel> {
-
-    return this.getArticleById$Response(params).pipe(
-      map((r: StrictHttpResponse<QueryResultModel>) => r.body as QueryResultModel)
-    );
-  }
-
-  /**
-   * Path part for operation deleteArticle
-   */
-  static readonly DeleteArticlePath = '/api/article/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `deleteArticle()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  deleteArticle$Response(params: {
-    id: number;
-  }): Observable<StrictHttpResponse<string>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ControllerService.DeleteArticlePath, 'delete');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `deleteArticle$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  deleteArticle(params: {
-    id: number;
-  }): Observable<string> {
-
-    return this.deleteArticle$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
-    );
   }
 
   /**
@@ -161,20 +70,20 @@ export class ControllerService extends BaseService {
   }
 
   /**
-   * Path part for operation initTrecData
+   * Path part for operation initData
    */
-  static readonly InitTrecDataPath = '/api/initTrec';
+  static readonly InitDataPath = '/api/initData';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `initTrecData()` instead.
+   * To access only the response body, use `initData()` instead.
    *
    * This method doesn't expect any request body.
    */
-  initTrecData$Response(params?: {
+  initData$Response(params?: {
   }): Observable<StrictHttpResponse<string>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ControllerService.InitTrecDataPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, ControllerService.InitDataPath, 'get');
     if (params) {
     }
 
@@ -191,104 +100,15 @@ export class ControllerService extends BaseService {
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `initTrecData$Response()` instead.
+   * To access the full response (for headers, for example), `initData$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  initTrecData(params?: {
+  initData(params?: {
   }): Observable<string> {
 
-    return this.initTrecData$Response(params).pipe(
+    return this.initData$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
-    );
-  }
-
-  /**
-   * Path part for operation clearIndex
-   */
-  static readonly ClearIndexPath = '/api/clearIndex';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `clearIndex()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  clearIndex$Response(params?: {
-  }): Observable<StrictHttpResponse<string>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ControllerService.ClearIndexPath, 'get');
-    if (params) {
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `clearIndex$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  clearIndex(params?: {
-  }): Observable<string> {
-
-    return this.clearIndex$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
-    );
-  }
-
-  /**
-   * Path part for operation search
-   */
-  static readonly SearchPath = '/api/query';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `search()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  search$Response(params?: {
-    body?: QueryModel
-  }): Observable<StrictHttpResponse<QueryResultModel>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ControllerService.SearchPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<QueryResultModel>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `search$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  search(params?: {
-    body?: QueryModel
-  }): Observable<QueryResultModel> {
-
-    return this.search$Response(params).pipe(
-      map((r: StrictHttpResponse<QueryResultModel>) => r.body as QueryResultModel)
     );
   }
 
@@ -428,20 +248,20 @@ export class ControllerService extends BaseService {
   }
 
   /**
-   * Path part for operation initData
+   * Path part for operation initTrecData
    */
-  static readonly InitDataPath = '/api/initData';
+  static readonly InitTrecDataPath = '/api/initTrec';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `initData()` instead.
+   * To access only the response body, use `initTrecData()` instead.
    *
    * This method doesn't expect any request body.
    */
-  initData$Response(params?: {
+  initTrecData$Response(params?: {
   }): Observable<StrictHttpResponse<string>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ControllerService.InitDataPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, ControllerService.InitTrecDataPath, 'get');
     if (params) {
     }
 
@@ -458,14 +278,14 @@ export class ControllerService extends BaseService {
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `initData$Response()` instead.
+   * To access the full response (for headers, for example), `initTrecData$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  initData(params?: {
+  initTrecData(params?: {
   }): Observable<string> {
 
-    return this.initData$Response(params).pipe(
+    return this.initTrecData$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
@@ -513,6 +333,230 @@ export class ControllerService extends BaseService {
 
     return this.saveIndex$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
+    );
+  }
+
+  /**
+   * Path part for operation getArticleById
+   */
+  static readonly GetArticleByIdPath = '/api/article/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getArticleById()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getArticleById$Response(params: {
+    id: number;
+  }): Observable<StrictHttpResponse<QueryResultModel>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ControllerService.GetArticleByIdPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<QueryResultModel>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `getArticleById$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getArticleById(params: {
+    id: number;
+  }): Observable<QueryResultModel> {
+
+    return this.getArticleById$Response(params).pipe(
+      map((r: StrictHttpResponse<QueryResultModel>) => r.body as QueryResultModel)
+    );
+  }
+
+  /**
+   * Path part for operation deleteArticle
+   */
+  static readonly DeleteArticlePath = '/api/article/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deleteArticle()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteArticle$Response(params: {
+    id: number;
+  }): Observable<StrictHttpResponse<string>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ControllerService.DeleteArticlePath, 'delete');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `deleteArticle$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteArticle(params: {
+    id: number;
+  }): Observable<string> {
+
+    return this.deleteArticle$Response(params).pipe(
+      map((r: StrictHttpResponse<string>) => r.body as string)
+    );
+  }
+
+  /**
+   * Path part for operation search
+   */
+  static readonly SearchPath = '/api/query';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `search()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  search$Response(params?: {
+    body?: QueryModel
+  }): Observable<StrictHttpResponse<QueryResultModel>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ControllerService.SearchPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<QueryResultModel>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `search$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  search(params?: {
+    body?: QueryModel
+  }): Observable<QueryResultModel> {
+
+    return this.search$Response(params).pipe(
+      map((r: StrictHttpResponse<QueryResultModel>) => r.body as QueryResultModel)
+    );
+  }
+
+  /**
+   * Path part for operation clearIndex
+   */
+  static readonly ClearIndexPath = '/api/clearIndex';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `clearIndex()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  clearIndex$Response(params?: {
+  }): Observable<StrictHttpResponse<string>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ControllerService.ClearIndexPath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `clearIndex$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  clearIndex(params?: {
+  }): Observable<string> {
+
+    return this.clearIndex$Response(params).pipe(
+      map((r: StrictHttpResponse<string>) => r.body as string)
+    );
+  }
+
+  /**
+   * Path part for operation checkSavedIndexState
+   */
+  static readonly CheckSavedIndexStatePath = '/api/savedIndex';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `checkSavedIndexState()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  checkSavedIndexState$Response(params?: {
+  }): Observable<StrictHttpResponse<SavedIndexStatus>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ControllerService.CheckSavedIndexStatePath, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<SavedIndexStatus>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `checkSavedIndexState$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  checkSavedIndexState(params?: {
+  }): Observable<SavedIndexStatus> {
+
+    return this.checkSavedIndexState$Response(params).pipe(
+      map((r: StrictHttpResponse<SavedIndexStatus>) => r.body as SavedIndexStatus)
     );
   }
 

@@ -15,6 +15,7 @@ export class EditArticlePopupComponent implements OnInit {
 
   @Input() isVisible;
   @Input() articleModel: ArticleModel;
+  @Input() selectedIndex;
   @Output() isVisibleChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
@@ -35,7 +36,7 @@ export class EditArticlePopupComponent implements OnInit {
       this.articleModel.title = this.insertForm.controls.title.value;
       this.articleModel.category = this.insertForm.controls.category.value;
       this.articleModel.content = this.insertForm.controls.content.value;
-      this.controllerService.updateArticle({body: this.articleModel}).toPromise();
+      this.controllerService.updateArticle({body: this.articleModel, indexName: this.selectedIndex}).toPromise();
       this.isVisibleChange.emit(false);
       this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful edited article!'});
     }

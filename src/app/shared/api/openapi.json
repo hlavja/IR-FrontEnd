@@ -11,12 +11,54 @@
     }
   ],
   "paths": {
-    "/api/articles": {
+    "/api/savedIndex": {
       "get": {
         "tags": [
           "controller"
         ],
-        "operationId": "getArticles",
+        "operationId": "checkSavedIndexState",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SavedIndexStatus"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/article/{id}": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "getArticleById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "indexName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "default response",
@@ -29,14 +71,31 @@
             }
           }
         }
-      }
-    },
-    "/api/initData": {
-      "get": {
+      },
+      "delete": {
         "tags": [
           "controller"
         ],
-        "operationId": "initData",
+        "operationId": "deleteArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "indexName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "default response",
@@ -51,17 +110,17 @@
         }
       }
     },
-    "/api/article": {
+    "/api/query": {
       "post": {
         "tags": [
           "controller"
         ],
-        "operationId": "updateArticle",
+        "operationId": "search",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ArticleModel"
+                "$ref": "#/components/schemas/QueryModel"
               }
             }
           }
@@ -72,7 +131,37 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArticleModel"
+                  "$ref": "#/components/schemas/QueryResultModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/saveIndex": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "saveIndex",
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -122,7 +211,99 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndexStatus"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndexStatus"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/article": {
+      "post": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "updateArticle",
+        "parameters": [
+          {
+            "name": "indexName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArticleModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/initData": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "initData",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/articles": {
+      "get": {
+        "tags": [
+          "controller"
+        ],
+        "operationId": "getArticles",
+        "parameters": [
+          {
+            "name": "indexName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResultModel"
                 }
               }
             }
@@ -150,125 +331,6 @@
         }
       }
     },
-    "/api/saveIndex": {
-      "get": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "saveIndex",
-        "parameters": [
-          {
-            "name": "fileName",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/article/{id}": {
-      "get": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "getArticleById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueryResultModel"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "deleteArticle",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/query": {
-      "post": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "search",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/QueryModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QueryResultModel"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/clearIndex": {
       "get": {
         "tags": [
@@ -288,30 +350,21 @@
           }
         }
       }
-    },
-    "/api/savedIndex": {
-      "get": {
-        "tags": [
-          "controller"
-        ],
-        "operationId": "checkSavedIndexState",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SavedIndexStatus"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "SavedIndexStatus": {
+        "type": "object",
+        "properties": {
+          "saved": {
+            "type": "boolean"
+          },
+          "indexName": {
+            "type": "string"
+          }
+        }
+      },
       "ArticleModel": {
         "type": "object",
         "properties": {
@@ -367,14 +420,6 @@
           }
         }
       },
-      "IndexStatus": {
-        "type": "object",
-        "properties": {
-          "initialized": {
-            "type": "boolean"
-          }
-        }
-      },
       "QueryModel": {
         "type": "object",
         "properties": {
@@ -387,14 +432,20 @@
           "numberOfResults": {
             "type": "integer",
             "format": "int32"
+          },
+          "indexName": {
+            "type": "string"
           }
         }
       },
-      "SavedIndexStatus": {
+      "IndexStatus": {
         "type": "object",
         "properties": {
-          "saved": {
+          "initialized": {
             "type": "boolean"
+          },
+          "indexName": {
+            "type": "string"
           }
         }
       }

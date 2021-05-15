@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Form, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ControllerService} from "../../shared/api/endpoints/services/controller.service";
 import {QueryModel} from "../../shared/api/endpoints/models/query-model";
 import {QueryResultModel} from "../../shared/api/endpoints/models/query-result-model";
@@ -18,6 +18,8 @@ export class IndexComponent implements OnInit {
   value = 'true';
   indexed = false;
   groups: string[] = ['10','20','30'];
+  indexInMemory: String[] = [];
+  selectedOption = 'Select index';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,12 +35,16 @@ export class IndexComponent implements OnInit {
   }
 
   search() {
+    if (this.selectedOption === 'Select index'){
+      return;
+    }
     if (this.searchForm.valid) {
       this.loading = true;
       this.queryModel = {
         query: this.searchForm.controls.searchText.value,
         vectorModel: this.value === 'true',
-        numberOfResults: this.searchForm.controls.groups.value
+        numberOfResults: this.searchForm.controls.groups.value,
+        indexName: this.selectedOption
       };
       this.controllerService.search({body: this.queryModel}).subscribe(
         response => {
@@ -56,7 +62,9 @@ export class IndexComponent implements OnInit {
   }
 
   isIndexed($event: any) {
-    this.indexed = $event;
+    this.indexed = true;
+    this.indexInMemory = $event;
+    console.log(this.indexInMemory)
   }
 
   indexCleared() {

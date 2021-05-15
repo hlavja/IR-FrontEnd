@@ -10,11 +10,12 @@ import {MessageService} from "primeng/api";
 })
 export class NavBarComponent implements OnInit, OnDestroy {
 
+  indexes = ['myData', 'trecData'];
   interval;
-  isIndexed = false;
-  isSaved = false;
+  isIndexed: String[] = [];
+  isSaved: String[] = [];
   @Output() emitIndexing: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() emitIndexed: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() emitIndexed: EventEmitter<String[]> = new EventEmitter<String[]>();
   @Output() emitClearIndex: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() isIndex;
   constructor(
@@ -34,11 +35,16 @@ export class NavBarComponent implements OnInit, OnDestroy {
   getIndexStatus() {
     this.controllerService.checkIndexStatus().pipe(
       tap(response => {
-        this.isIndexed = response.initialized;
-        this.emitIndexed.emit(response.initialized);
-        if (!response.initialized) {
-          this.emitClearIndex.emit();
-        }
+        this.isIndexed = [];
+        response.forEach(value => {
+          if (value.initialized && !this.isIndexed.includes(value.indexName)) {
+            this.isIndexed.push(value.indexName);
+            this.emitIndexed.emit(this.isIndexed);
+            if (!value.initialized) {
+              this.emitClearIndex.emit();
+            }
+          }
+        })
       })
     ).subscribe();
   }
@@ -47,7 +53,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
   getSavedIndex() {
     this.controllerService.checkSavedIndexState().pipe(
       tap(response => {
-        this.isSaved = response.saved;
+        this.isSaved = [];
+        response.forEach(value => {
+          if (value.saved && !this.isSaved.includes(value.indexName)) {
+            this.isSaved.push(value.indexName);
+          }
+        })
       })
     ).subscribe();
   }
@@ -63,10 +74,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
     ).subscribe(res => {
       if (res) {
         console.log('completed');
-        this.isIndexed = true;
+        if (!this.isIndexed.includes('myData')) {
+          this.isIndexed.push('myData');
+        }
         this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful indexed CRYPTO data!'});
         this.emitIndexing.emit(false);
-        this.emitIndexed.emit(true);
+        this.emitIndexed.emit(this.isIndexed);
       }
     });
   }
@@ -78,21 +91,24 @@ export class NavBarComponent implements OnInit, OnDestroy {
     ).subscribe(res => {
       if (res) {
         console.log('completed');
-        this.isIndexed = true;
+        if (!this.isIndexed.includes('trecData')) {
+          this.isIndexed.push('trecData');
+        }
         this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful indexed TREC data!'});
         this.emitIndexing.emit(false);
-        this.emitIndexed.emit(true);
+        this.emitIndexed.emit(this.isIndexed);
       }
     });
 
   }
 
-  saveIndex() {
+  saveIndex(indexName) {
     this.emitIndexing.emit(true);
-    this.controllerService.saveIndex$Response({fileName: 'index'}).pipe().subscribe(res => {
+    this.controllerService.saveIndex$Response({fileName: indexName}).pipe().subscribe(res => {
       if (res.status === 200) {
-        console.log('completed');
-        this.isSaved = true;
+        if (!this.isSaved.includes(indexName)) {
+          this.isSaved.push(indexName);
+        }
         this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful save index!'});
         this.emitIndexing.emit(false);
       } else {
@@ -101,14 +117,16 @@ export class NavBarComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadIndex() {
+  loadIndex(indexName) {
     this.emitIndexing.emit(true);
-    this.controllerService.loadIndex$Response({fileName: 'index'}).pipe().subscribe(res => {
+    this.controllerService.loadIndex$Response({fileName: indexName}).pipe().subscribe(res => {
       if (res.status === 200) {
         console.log('completed');
         this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful loaded index!'});
-        this.isIndexed = true;
-        this.emitIndexed.emit(true);
+        if (!this.isIndexed.includes(indexName)) {
+          this.isIndexed.push(indexName);
+        }
+        this.emitIndexed.emit(this.isIndexed);
         this.emitIndexing.emit(false);
       } else {
         this.messageService.add({key: 'mainToast', severity:'error', summary: 'Error!', detail: 'Wrong request!'});
@@ -119,8 +137,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   clearIndex() {
     this.controllerService.clearIndex().toPromise().then();
     this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful cleared index!'});
-    this.isIndexed = false;
-    this.emitIndexed.emit(false);
+    this.isIndexed = [];
+    this.emitIndexed.emit(this.isIndexed);
     this.emitClearIndex.emit();
   }
 }

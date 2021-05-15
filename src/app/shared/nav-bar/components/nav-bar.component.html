@@ -2,41 +2,51 @@
   <a class="navbar-brand">
     <img class="logo" src="/assets/images/ir.png" alt="TicTacToe">
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul *ngIf="isIndex" class="navbar-nav mr-auto">
-      <li class='nav-item'>
-        <a class="nav-link" (click)="initIndex()">Init CRYPTO data</a>
-      </li>
-      <li class='nav-item'>
-        <a class="nav-link" (click)="initTrec()">Init TREC data</a>
-      </li>
-      <li *ngIf="isSaved">
-        <a class="nav-link" (click)="loadIndex()">Load index</a>
-      </li>
-      <li *ngIf="isIndexed" class='nav-item'>
-        <a class="nav-link" (click)="saveIndex()">Save index</a>
-      </li>
-      <li *ngIf="isIndexed" class='nav-item'>
+    <ul class="navbar-nav mr-auto">
+      <li *ngIf="isIndex && isIndexed.length > 0" class='nav-item'>
         <a class="nav-link" [routerLink]="['/articles']">Indexed articles</a>
       </li>
+      <ul *ngIf="!isIndex" class="navbar-nav mr-auto">
+        <li class='nav-item'>
+          <a class="nav-link" [routerLink]="['']">Search</a>
+        </li>
+      </ul>
     </ul>
-    <ul *ngIf="!isIndex" class="navbar-nav mr-auto">
-      <li class='nav-item'>
-        <a class="nav-link" [routerLink]="['']">Search</a>
-      </li>
-    </ul>
-
-    <ul *ngIf="isIndex" class="nav navbar-nav navbar-right">
+    <ul *ngIf="isIndex && isIndexed.length > 0" class="nav navbar-nav navbar-right">
       <li class='nav-item' *ngIf="isIndexed">
-        <a class="nav-link" (click)="clearIndex()">Clear index</a>
+        <a class="nav-link" (click)="clearIndex()">Clear indexes</a>
       </li>
     </ul>
   </div>
 </nav>
-
-
+<nav *ngIf="isIndex" class="navbar navbar-expand-md bg-light navbar-light">
+  <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar2">
+    <ul class="navbar-nav mr-auto">
+      <li class='nav-item'>
+        <a class="nav-link" (click)="initIndex()">Init CRYPTO index</a>
+      </li>
+      <li *ngIf="isSaved.includes('myData')" class='nav-item'>
+        <a class="nav-link" (click)="loadIndex('myData')">Load CRYPTO index</a>
+      </li>
+      <li *ngIf="isIndexed.includes('myData')" class='nav-item'>
+        <a class="nav-link" (click)="saveIndex('myData')">Save CRYPTO index</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<nav *ngIf="isIndex" class="navbar navbar-expand-md bg-light navbar-light">
+  <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar3">
+    <ul class="navbar-nav mr-auto">
+      <li class='nav-item'>
+        <a class="nav-link" (click)="initTrec()">Init TREC index</a>
+      </li>
+      <li *ngIf="isSaved.includes('trecData')" class='nav-item'>
+        <a class="nav-link" (click)="loadIndex('trecData')">Load TREC index</a>
+      </li>
+      <li *ngIf="isIndexed.includes('trecData')" class='nav-item'>
+        <a class="nav-link" (click)="saveIndex('trecData')">Save TREC index</a>
+      </li>
+    </ul>
+  </div>
+</nav>

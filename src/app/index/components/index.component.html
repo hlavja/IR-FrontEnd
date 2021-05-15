@@ -7,7 +7,15 @@
     <div class="d-flex justify-content-center h-100">
         <div class="card-body">
           <div class="form-group text-center mt-4">
-            <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+            <div class="row justify-content-center">
+              <select [(ngModel)]="selectedOption">
+                <option value="Select index" selected disabled>Select index</option>
+                <option *ngFor="let index of indexInMemory; let i = index" [value]="indexInMemory[i]">
+                  {{index}}
+                </option>
+              </select>
+              <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value"></p-selectButton>
+            </div>
           </div>
           <form [formGroup]="searchForm" (ngSubmit)="search()">
             <div class="input-group form-group">
@@ -29,7 +37,7 @@
         </div>
     </div>
     <div>
-      <div class="container dashboard" *ngIf="queryResultModel?.documentsCount">
+      <div class="container dashboard" *ngIf="queryResultModel?.documentsCount > -1">
         <div class="col">
           Total number of results: {{queryResultModel?.documentsCount}}
         </div>

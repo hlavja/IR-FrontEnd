@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Form, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ControllerService} from "../../shared/api/endpoints/services/controller.service";
 import {QueryModel} from "../../shared/api/endpoints/models/query-model";
 import {QueryResultModel} from "../../shared/api/endpoints/models/query-result-model";

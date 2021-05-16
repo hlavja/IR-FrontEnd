@@ -75,10 +75,11 @@ export class ArticlesComponent implements OnInit {
   }
 
   deleteArticle($event: MouseEvent, article: ArticleModel) {
-    this.controllerService.deleteArticle({id: article.id, indexName: this.selectedOption}).toPromise().then(
+    console.log(article);
+    this.controllerService.deleteArticle$Response({id: article.id, indexName: this.selectedOption}).toPromise().then(
       response => {
-        if (response) {
-          this.queryResultModel.articles = this.queryResultModel.articles.filter(art => art.id === article.id);
+        if (response.status === 200) {
+          this.queryResultModel.articles = this.queryResultModel.articles.filter(art => art.id.toString() !== article.id.toString());
           this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful deleted article!'});
         }
       }

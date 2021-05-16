@@ -78,7 +78,7 @@ export class ArticlesComponent implements OnInit {
     this.controllerService.deleteArticle({id: article.id, indexName: this.selectedOption}).toPromise().then(
       response => {
         if (response) {
-          this.queryResultModel.articles = this.queryResultModel.articles.filter(art => art.id !== article.id);
+          this.queryResultModel.articles = this.queryResultModel.articles.filter(art => art.id === article.id);
           this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful deleted article!'});
         }
       }

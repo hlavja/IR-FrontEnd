@@ -20,6 +20,7 @@ export class IndexComponent implements OnInit {
   groups: string[] = ['10','20','30'];
   indexInMemory: String[] = [];
   selectedOption = 'Select index';
+  searchTerms: String[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,6 +47,7 @@ export class IndexComponent implements OnInit {
         numberOfResults: this.searchForm.controls.groups.value,
         indexName: this.selectedOption
       };
+      this.searchTerms = this.getSearchWords(this.searchForm.controls.searchText.value);
       this.controllerService.search({body: this.queryModel}).subscribe(
         response => {
           this.queryResultModel = response;
@@ -56,7 +58,6 @@ export class IndexComponent implements OnInit {
   }
 
   indexing($event: any) {
-    console.log($event);
     this.queryResultModel = null;
     this.loading = $event;
   }
@@ -64,12 +65,31 @@ export class IndexComponent implements OnInit {
   isIndexed($event: any) {
     this.indexed = true;
     this.indexInMemory = $event;
-    console.log(this.indexInMemory)
   }
 
   indexCleared() {
     this.selectedOption = 'Select index';
     this.indexed = false;
     this.queryResultModel = null;
+  }
+
+  getSearchWords(searchString: String) {
+    searchString = searchString.replace('(', '').replace(')', '').replace('AND', '').replace('OR', '');
+    let array = searchString.split(' ');
+    array = array.filter(value1 => value1 !== '');
+    array = array.filter(val => val !== 'AND');
+    array = array.filter(val => val !== 'OR');
+    array = array.filter(val => val !== 'NOT');
+    array = array.filter(val => val !== '(');
+    array = array.filter(val => val !== ')');
+/*    while (array.indexOf('NOT') > 0) {
+      array.forEach((value1, index) => {
+        if (value1 === 'NOT') {
+          array.splice(index, 2);
+        }
+      });
+      console.log(array);
+    }*/
+    return array;
   }
 }

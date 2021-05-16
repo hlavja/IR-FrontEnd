@@ -7,12 +7,14 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AccordionModule} from "primeng/accordion";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {SelectButtonModule} from "primeng/selectbutton";
+import {HighlightText} from "./components/transform";
 
 
 
 @NgModule({
   declarations: [
-    IndexComponent
+    IndexComponent,
+    HighlightText
   ],
   imports: [
     CommonModule,

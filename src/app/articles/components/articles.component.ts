@@ -4,6 +4,7 @@ import {ControllerService} from "../../shared/api/endpoints/services/controller.
 import {ArticleModel} from "../../shared/api/endpoints/models/article-model";
 import {MessageService} from "primeng/api";
 import {tap} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-article',
@@ -14,13 +15,15 @@ export class ArticlesComponent implements OnInit {
   queryResultModel: QueryResultModel
   editedArticle: ArticleModel;
   showArticlePopup = false;
+  showAddArticlePopup = false;
   indexInMemory: String[] = [];
   selectedOption = 'Select index';
   loading = false;
 
   constructor(
     private controllerService: ControllerService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -31,6 +34,9 @@ export class ArticlesComponent implements OnInit {
     this.controllerService.checkIndexStatus().pipe(
       tap(response => {
         this.indexInMemory = [];
+        if (response.length === 0) {
+          this.router.navigate(['']);
+        }
         response.forEach(value => {
           if (value.initialized && !this.indexInMemory.includes(value.indexName)) {
             this.indexInMemory.push(value.indexName);
@@ -52,10 +58,6 @@ export class ArticlesComponent implements OnInit {
 
   }
 
-  insertArticle() {
-    //TODO
-  }
-
   getArticles() {
     this.loading = true;
     this.controllerService.getArticles({indexName: this.selectedOption}).pipe().subscribe(res => {
@@ -73,9 +75,22 @@ export class ArticlesComponent implements OnInit {
   }
 
   deleteArticle($event: MouseEvent, article: ArticleModel) {
-    this.controllerService.deleteArticle({id: article.id, indexName: this.selectedOption}).toPromise();
-    this.queryResultModel.articles = this.queryResultModel.articles.filter(art => art.id !== article.id);
-    this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful deleted article!'});
+    this.controllerService.deleteArticle({id: article.id, indexName: this.selectedOption}).toPromise().then(
+      response => {
+        if (response) {
+          this.queryResultModel.articles = this.queryResultModel.articles.filter(art => art.id !== article.id);
+          this.messageService.add({key: 'mainToast', severity:'success', summary: 'Success!', detail: 'Successful deleted article!'});
+        }
+      }
+    );
   }
 
+  addArticle($event: MouseEvent) {
+    $event.stopPropagation();
+    this.showAddArticlePopup = true;
+  }
+
+  addNewArticleEmit(newArticle: ArticleModel) {
+    this.queryResultModel.articles.push(newArticle);
+  }
 }

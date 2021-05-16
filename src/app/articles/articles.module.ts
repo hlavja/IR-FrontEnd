@@ -11,26 +11,30 @@ import {RouterModule} from "@angular/router";
 import { EditArticlePopupComponent } from './components/edit-article-popup/edit-article-popup.component';
 import {DialogModule} from "primeng/dialog";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import { AddArticlePopupComponent } from './components/add-article-popup/add-article-popup.component';
+import {CalendarModule} from "primeng/calendar";
 
 
 
 @NgModule({
   declarations: [
     ArticlesComponent,
-    EditArticlePopupComponent
+    EditArticlePopupComponent,
+    AddArticlePopupComponent
   ],
-  imports: [
-    CommonModule,
-    NavBarModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    AccordionModule,
-    ProgressSpinnerModule,
-    SelectButtonModule,
-    FormsModule,
-    RouterModule,
-    DialogModule,
-    InputTextareaModule
-  ]
+    imports: [
+        CommonModule,
+        NavBarModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        AccordionModule,
+        ProgressSpinnerModule,
+        SelectButtonModule,
+        FormsModule,
+        RouterModule,
+        DialogModule,
+        InputTextareaModule,
+        CalendarModule
+    ]
 })
 export class ArticlesModule { }

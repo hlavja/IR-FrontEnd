@@ -12,6 +12,7 @@
             {{index}}
           </option>
         </select>
+        <button *ngIf="selectedOption != 'Select index'" pButton type="button" label="Add article" icon="pi pi-cog" (click)="addArticle($event)" [className]="'p-button-success'"></button>
       </div>
     </div>
   </div>
@@ -56,3 +57,4 @@
 </div>
 
 <app-edit-article-popup *ngIf="showArticlePopup" [(isVisible)]="showArticlePopup" [articleModel]="editedArticle" [selectedIndex]="selectedOption"></app-edit-article-popup>
+<app-add-article-popup *ngIf="showAddArticlePopup" [(isVisible)]="showAddArticlePopup" [selectedIndex]="selectedOption" (newArticle)="addNewArticleEmit($event)"></app-add-article-popup>

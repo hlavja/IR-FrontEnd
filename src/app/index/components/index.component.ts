@@ -68,6 +68,7 @@ export class IndexComponent implements OnInit {
   }
 
   indexCleared() {
+    this.selectedOption = 'Select index';
     this.indexed = false;
     this.queryResultModel = null;
   }

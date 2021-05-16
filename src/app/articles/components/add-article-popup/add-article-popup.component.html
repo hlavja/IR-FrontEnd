@@ -1,0 +1,51 @@
+<p-dialog [visible]="isVisible" [closable]="false" [modal]="true" [draggable]="false" header="Add article to index {{selectedIndex}}!" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <form [formGroup]="insertForm">
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Author</span>
+      </div>
+      <input type="text" formControlName="author" class="form-control" id="author"
+             placeholder="Author"/>
+    </div>
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Title</span>
+      </div>
+      <input type="text" formControlName="title" class="form-control" id="title"
+             placeholder="Title"/>
+    </div>
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Url</span>
+      </div>
+      <input type="text" formControlName="url" class="form-control" id="url"
+             placeholder="Url"/>
+    </div>
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Content</span>
+      </div>
+      <textarea pInputTextarea type="text" formControlName="content" class="form-control" id="content"
+                placeholder="Content}"></textarea>
+    </div>
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Category</span>
+      </div>
+      <input type="text" formControlName="category" class="form-control" id="category"
+             placeholder="Category"/>
+    </div>
+    <div class="input-group form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Published</span>
+      </div>
+      <p-calendar formControlName="published" [showTime]="true" inputId="published"></p-calendar>
+    </div>
+  </form>
+  <p-footer>
+    <div>
+      <p-button icon="pi pi-times" (click)="close()" label="Close" class="pr-2"></p-button>
+      <p-button icon="pi pi-check" (click)="processArticleInsertion()" type="submit" label="Save" class="pr-2"></p-button>
+    </div>
+  </p-footer>
+</p-dialog>

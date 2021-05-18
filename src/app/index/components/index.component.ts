@@ -47,10 +47,11 @@ export class IndexComponent implements OnInit {
         numberOfResults: this.searchForm.controls.groups.value,
         indexName: this.selectedOption
       };
-      this.searchTerms = this.getSearchWords(this.searchForm.controls.searchText.value);
-      this.controllerService.search({body: this.queryModel}).subscribe(
+      this.controllerService.search({body: this.queryModel}).toPromise().then(
         response => {
           this.queryResultModel = response;
+          //this.searchTerms = this.getSearchWordsArray(this.queryResultModel.searchWords);
+          this.searchTerms = this.getSearchWords(this.searchForm.controls.searchText.value);
           this.loading = false;
         }
       );
@@ -75,6 +76,9 @@ export class IndexComponent implements OnInit {
 
   getSearchWords(searchString: String) {
     searchString = searchString.replace('(', '').replace(')', '').replace('AND', '').replace('OR', '');
+    while (searchString.indexOf('(') > 0 || searchString.indexOf(')') > 0) {
+      searchString = searchString.replace('(', '').replace(')', '');
+    }
     let array = searchString.split(' ');
     array = array.filter(value1 => value1 !== '');
     array = array.filter(val => val !== 'AND');
@@ -90,6 +94,25 @@ export class IndexComponent implements OnInit {
       });
       console.log(array);
     }*/
+    return array;
+  }
+
+  getSearchWordsArray(searchString: String[]) {
+    let array = searchString;
+    array = array.filter(value1 => value1 !== '');
+    array = array.filter(val => val !== 'AND');
+    array = array.filter(val => val !== 'OR');
+    array = array.filter(val => val !== 'NOT');
+    array = array.filter(val => val !== '(');
+    array = array.filter(val => val !== ')');
+    /*    while (array.indexOf('NOT') > 0) {
+          array.forEach((value1, index) => {
+            if (value1 === 'NOT') {
+              array.splice(index, 2);
+            }
+          });
+          console.log(array);
+        }*/
     return array;
   }
 }
